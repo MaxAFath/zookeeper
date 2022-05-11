@@ -36,15 +36,6 @@ function findById(id, animalsArray) {
   return result;
 }
 
-app.get('/', (req, res, next) =>{
-    res.status(200).json({
-        status:'success',
-        data:{
-            name:'zookeeper',
-            version:'0.1.0'
-        }
-    });
-})
 
 app.get('/api/animals', (req, res) => {
   let results = animals;
