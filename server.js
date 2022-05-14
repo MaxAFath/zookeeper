@@ -2,11 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const { animals } = require('./data/animals');
+const { response } = require('express');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
@@ -94,6 +96,28 @@ app.post('/api/animals', (req, res) => {
     }
 });
 //
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
+
+fetch('/api/animals', {
+    method: 'POST',
+    headers: {
+        Accept: 'application/json'
+    },
+    body: JSON.stringify(animalObject)
+})
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        alert('Error: ' + response.statusText);
+    })
+    .then(postResponse => {
+        console.log(postResponse);
+        alert('Thank you for adding an animal!');
+    });
